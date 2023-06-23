@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { CategoriesModule } from './pages/categories/categories.module';
 
 @NgModule({
   declarations: [
@@ -12,7 +13,7 @@ import { AppRoutingModule } from './app-routing.module';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    RouterModule
+    CategoriesModule
   ],
   providers: [],
   bootstrap: [AppComponent]
