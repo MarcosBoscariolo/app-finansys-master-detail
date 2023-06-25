@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { map, catchError, flatMap } from 'rxjs';
 
-import { Category } from '../model/category.interface';
+import { Category } from '../model/category.class';
 
 @Injectable({
   providedIn: 'root'
