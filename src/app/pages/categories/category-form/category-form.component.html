@@ -38,6 +38,14 @@
       </div>
     </div>
   </div>
+
+  <div class="alert alert-danger mt-4" *ngIf="serverErrorMessages">
+    <strong>Erro no servidor:</strong>
+    <ul>
+      <li *ngFor="let error of serverErrorMessages">{{ error }}</li>
+    </ul>
+  </div>
+
   <div class="col-md float-start mt-3">
     <a routerLink="/categories" class="btn btn-light me-2">Voltar</a>
     <button
