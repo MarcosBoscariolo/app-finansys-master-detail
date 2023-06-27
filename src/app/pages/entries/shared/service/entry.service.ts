@@ -11,14 +11,14 @@ import { Entry } from '../model/entry.class';
 })
 export class EntryService {
 
-  private apiPath: string = "api/categories";
+  private apiPath: string = "api/entries";
 
   constructor(private httpClient: HttpClient) { }
 
   getAll(): Observable<Entry[]> {
     return this.httpClient.get(this.apiPath).pipe(
       catchError(this.handleError),
-      map(this.jsonDataToCategories)
+      map(this.jsonDataToEntries)
     );
   }
 
@@ -53,14 +53,17 @@ export class EntryService {
     );
   }
 
-  private jsonDataToCategories(jsonData: any[]): Entry[] {
-    const categories: Entry[] = [];
-    jsonData.forEach(item => categories.push(item as Entry));
-    return categories;
+  private jsonDataToEntries(jsonData: any[]): Entry[] {
+    const entries: Entry[] = [];
+    jsonData.forEach((item) => {
+      const entry = Object.assign(new Entry(), item);
+      entries.push(entry);
+    });
+    return entries;
   }
 
   private jsonDataToentry(jsonData: any): Entry {
-    return jsonData as Entry;
+    return Object.assign(new Entry(), jsonData);
   }
 
   private handleError(error: any): Observable<any> {
