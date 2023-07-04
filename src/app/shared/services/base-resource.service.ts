@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injector } from '@angular/core';
 
-import { Observable, throwError } from 'rxjs';
-import { map, catchError } from 'rxjs';
+import { Observable, throwError, map, catchError } from 'rxjs';
 
 import { BaseResourceModel } from "src/app/shared/models/base-resource.model";
 
@@ -66,5 +65,4 @@ export abstract class BaseResourceService<T extends BaseResourceModel> {
     console.error('[ERROR]: erro na requisição de categorias', error);
     return throwError(error);
   }
-
 }
