@@ -9,37 +9,41 @@ export abstract class BaseResourceService<T extends BaseResourceModel> {
 
   protected httpClient: HttpClient;
 
-  constructor(protected apiPath: string, protected injector: Injector) {
+  constructor(
+    protected apiPath: string,
+    protected injector: Injector,
+    protected jsonDataToResorceFn: (jsonData: any) => T
+  ) {
     this.httpClient = injector.get(HttpClient);
   }
 
   getAll(): Observable<T[]> {
-    return this.httpClient.get(this.apiPath).pipe(
-      catchError(this.handleError),
-      map(this.jsonDataToResources)
+    return this.httpClient.get<any[]>(this.apiPath).pipe(
+      map(this.jsonDataToResources.bind(this)),
+      catchError(this.handleError)
     );
   }
 
   getById(id: number): Observable<T> {
     const url = `${this.apiPath}/${id}`;
     return this.httpClient.get(url).pipe(
-      catchError(this.handleError),
-      map(this.jsonDataToResource)
+      map(this.jsonDataToResource.bind(this)),
+      catchError(this.handleError)
     );
   }
 
   create(resource: T): Observable<T> {
     return this.httpClient.post(this.apiPath, resource).pipe(
-      catchError(this.handleError),
-      map(this.jsonDataToResource)
+      map(this.jsonDataToResource.bind(this)),
+      catchError(this.handleError)
     );
   }
 
   update(resource: T): Observable<T> {
     const url = `${this.apiPath}/${resource.id}`;
     return this.httpClient.put(url, resource).pipe(
-      catchError(this.handleError),
-      map(() => resource)
+      map(() => resource),
+      catchError(this.handleError)
     );
   }
 
@@ -53,12 +57,12 @@ export abstract class BaseResourceService<T extends BaseResourceModel> {
 
   protected jsonDataToResources(jsonData: any[]): T[] {
     const resources: T[] = [];
-    jsonData.forEach(item => resources.push(item as T));
+    jsonData.forEach((item) => resources.push(this.jsonDataToResorceFn(item)));
     return resources;
   }
 
   protected jsonDataToResource(jsonData: any): T {
-    return jsonData as T;
+    return this.jsonDataToResorceFn(jsonData);
   }
 
   protected handleError(error: any): Observable<any> {
